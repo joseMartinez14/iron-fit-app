@@ -104,6 +104,14 @@ export function WeeklySchedule({
         });
     };
 
+    // Format date for display
+    const formatDate = (date: Date) => {
+        return new Date(date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
     // Get date for each day of the week
     const getDateForDay = (dayIndex: number) => {
         // Ensure startDate is always Monday
@@ -212,7 +220,7 @@ export function WeeklySchedule({
                                             }`}
                                     >
                                         <p className="font-medium text-xs">
-                                            {formatTime(classSession.startTime)}
+                                            {formatTime(classSession.startTime)} – {formatTime(classSession.endTime)}
                                         </p>
                                         <p className={`font-medium ${classSession.isCancelled ? 'text-red-600 line-through' : 'text-gray-800'
                                             }`}>
@@ -223,6 +231,9 @@ export function WeeklySchedule({
                                         </p>
                                         <p className="text-gray-500 text-xs">
                                             {classSession._count?.reservations || 0}/{classSession.capacity}
+                                        </p>
+                                        <p className="text-gray-500 text-xs">
+                                            {formatDate(classSession.date)}
                                         </p>
                                         {classSession.isCancelled && (
                                             <p className="text-red-500 text-xs font-medium">CANCELLED</p>

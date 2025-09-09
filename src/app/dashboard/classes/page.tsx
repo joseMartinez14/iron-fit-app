@@ -21,6 +21,7 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
 
     try {
         classesData = await getClassesByDateRangeServer(startDate, endDate);
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         console.error('Error fetching classes:', err);

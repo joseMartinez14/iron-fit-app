@@ -133,6 +133,8 @@ export async function saveMultipleClasses(data: RecurringClassData) {
     clerkUserId,
   } = data;
 
+  console.log("Creating recurring classes with data:", data);
+
   // Find instructor
   const instructorRecord = await prisma.admin.findFirst({
     where: { clerkId: clerkUserId },
@@ -157,8 +159,12 @@ export async function saveMultipleClasses(data: RecurringClassData) {
   const classSessions = [];
 
   // Generate all class sessions between start and end date
+  console.log("Start Date:", startDate);
+  console.log("End Date:", endDate);
   const currentDate = new Date(startDate);
   const endDateObj = new Date(endDate);
+  console.log("Start Date obj:", currentDate);
+  console.log("End Date obj:", endDateObj);
 
   while (currentDate <= endDateObj) {
     if (selectedDays.includes(currentDate.getDay())) {
