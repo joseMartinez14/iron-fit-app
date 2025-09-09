@@ -1,5 +1,48 @@
 import { prisma } from "@/lib/prisma";
 
+// Timezone handling: assume incoming dates/times are in UTC-6 and convert to UTC for storage
+const ASSUMED_UTC_OFFSET_HOURS = 6; // UTC-6 -> add 6 hours to get UTC
+
+function parseDateParts(dateStr: string) {
+  const [y, m, d] = dateStr.split("-").map((n) => parseInt(n, 10));
+  return { y, m, d };
+}
+
+function parseTimeParts(timeStr: string | undefined) {
+  if (!timeStr) return { hh: 0, mm: 0, ss: 0 };
+  const [h, m = "0", s = "0"] = timeStr.split(":");
+  return { hh: parseInt(h, 10) || 0, mm: parseInt(m, 10) || 0, ss: parseInt(s, 10) || 0 };
+}
+
+function toUtcFromUtcMinus6(dateStr: string, timeStr?: string): Date {
+  const { y, m, d } = parseDateParts(dateStr);
+  const { hh, mm, ss } = parseTimeParts(timeStr);
+  // Add the offset to convert local (UTC-6) time to UTC
+  const ms = Date.UTC(y, (m || 1) - 1, d || 1, (hh || 0) + ASSUMED_UTC_OFFSET_HOURS, mm || 0, ss || 0, 0);
+  return new Date(ms);
+}
+
+function dateOnlyUtcFromUtcMinus6(dateStr: string): Date {
+  // Local midnight (00:00 at UTC-6) corresponds to 06:00 UTC of the same nominal date
+  return toUtcFromUtcMinus6(dateStr, "00:00:00");
+}
+
+function endOfDayUtcFromUtcMinus6(dateStr: string): Date {
+  // Local 23:59:59.999 at UTC-6 corresponds to 05:59:59.999 UTC of the next day
+  const { y, m, d } = parseDateParts(dateStr);
+  const ms = Date.UTC(y, (m || 1) - 1, (d || 1) + 1, ASSUMED_UTC_OFFSET_HOURS - 1, 59, 59, 999);
+  return new Date(ms);
+}
+
+function formatLocalUtcMinus6TimeFromUtc(date: Date): string {
+  // Extract the time-of-day the user intended (UTC-6) from a stored UTC Date
+  const hh = (date.getUTCHours() - ASSUMED_UTC_OFFSET_HOURS + 24) % 24;
+  const mm = date.getUTCMinutes();
+  const ss = date.getUTCSeconds();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+}
+
 interface SingleClassData {
   name: string;
   description?: string;
@@ -96,16 +139,16 @@ export async function saveOneClass(data: SingleClassData) {
     throw new Error("Instructor not found");
   }
 
-  // Combine date and time for start and end DateTime
-  const startDateTime = new Date(`${date}T${startTime}`);
-  const endDateTime = new Date(`${date}T${endTime}`);
+  // Combine date and time, assuming input is UTC-6, convert to UTC
+  const startDateTime = toUtcFromUtcMinus6(date, startTime);
+  const endDateTime = toUtcFromUtcMinus6(date, endTime);
 
   const classSession = await prisma.classSession.create({
     data: {
       title: name,
       description: description || null,
       capacity: parseInt(capacity),
-      date: new Date(date),
+      date: dateOnlyUtcFromUtcMinus6(date),
       startTime: startDateTime,
       endTime: endDateTime,
       instructorID: instructorRecord.id,
@@ -161,23 +204,31 @@ export async function saveMultipleClasses(data: RecurringClassData) {
   // Generate all class sessions between start and end date
   console.log("Start Date:", startDate);
   console.log("End Date:", endDate);
-  const currentDate = new Date(startDate);
-  const endDateObj = new Date(endDate);
-  console.log("Start Date obj:", currentDate);
-  console.log("End Date obj:", endDateObj);
+  // Iterate day by day using the provided date strings (treating them as UTC-6 calendar days)
+  const startParts = parseDateParts(startDate);
+  const endParts = parseDateParts(endDate);
+  let cy = startParts.y,
+    cm = startParts.m,
+    cd = startParts.d;
+  const isBeforeOrEqual = (y: number, m: number, d: number) =>
+    y < endParts.y || (y === endParts.y && (m < endParts.m || (m === endParts.m && d <= endParts.d)));
 
-  while (currentDate <= endDateObj) {
-    if (selectedDays.includes(currentDate.getDay())) {
-      const dateStr = currentDate.toISOString().split("T")[0];
-      const startDateTime = new Date(`${dateStr}T${startTime}`);
-      const endDateTime = new Date(`${dateStr}T${endTime}`);
+  while (isBeforeOrEqual(cy, cm, cd)) {
+    const dateStr = `${cy.toString().padStart(4, "0")}-${cm.toString().padStart(2, "0")}-${cd
+      .toString()
+      .padStart(2, "0")}`;
+    // Compute day-of-week relative to UTC-6 by using UTC 06:00 of that date
+    const dow = new Date(Date.UTC(cy, (cm || 1) - 1, cd || 1, ASSUMED_UTC_OFFSET_HOURS)).getUTCDay();
+    if (selectedDays.includes(dow)) {
+      const startDateTime = toUtcFromUtcMinus6(dateStr, startTime);
+      const endDateTime = toUtcFromUtcMinus6(dateStr, endTime);
 
       const classSession = await prisma.classSession.create({
         data: {
           title: name,
           description: description || null,
           capacity: parseInt(capacity),
-          date: new Date(dateStr),
+          date: dateOnlyUtcFromUtcMinus6(dateStr),
           startTime: startDateTime,
           endTime: endDateTime,
           instructorID: instructorRecord.id,
@@ -189,7 +240,10 @@ export async function saveMultipleClasses(data: RecurringClassData) {
     }
 
     // Move to next day
-    currentDate.setDate(currentDate.getDate() + 1);
+    const next = new Date(Date.UTC(cy, (cm || 1) - 1, (cd || 1) + 1));
+    cy = next.getUTCFullYear();
+    cm = next.getUTCMonth() + 1;
+    cd = next.getUTCDate();
   }
 
   return {
@@ -242,17 +296,17 @@ export async function updateClass(data: UpdateClassData) {
   if (isCancelled !== undefined) updateData.isCancelled = isCancelled; // Use boolean directly
 
   // Handle date and time updates
-  if (date !== undefined) updateData.date = new Date(date);
+  if (date !== undefined) updateData.date = dateOnlyUtcFromUtcMinus6(date);
 
   if (startTime !== undefined || endTime !== undefined || date !== undefined) {
     const classDate = date || existingClass.date.toISOString().split("T")[0];
 
     if (startTime !== undefined) {
-      updateData.startTime = new Date(`${classDate}T${startTime}`);
+      updateData.startTime = toUtcFromUtcMinus6(classDate, startTime);
     }
 
     if (endTime !== undefined) {
-      updateData.endTime = new Date(`${classDate}T${endTime}`);
+      updateData.endTime = toUtcFromUtcMinus6(classDate, endTime);
     }
 
     // If only date changed, update the time components too
@@ -261,15 +315,15 @@ export async function updateClass(data: UpdateClassData) {
       startTime === undefined &&
       endTime === undefined
     ) {
-      const existingStartTime = existingClass.startTime
-        .toTimeString()
-        .split(" ")[0];
-      const existingEndTime = existingClass.endTime
-        .toTimeString()
-        .split(" ")[0];
-      updateData.startTime = new Date(`${date}T${existingStartTime}`);
-      updateData.endTime = new Date(`${date}T${existingEndTime}`);
-    }
+      const existingStartLocal = formatLocalUtcMinus6TimeFromUtc(
+        existingClass.startTime
+      );
+      const existingEndLocal = formatLocalUtcMinus6TimeFromUtc(
+        existingClass.endTime
+      );
+      updateData.startTime = toUtcFromUtcMinus6(date, existingStartLocal);
+      updateData.endTime = toUtcFromUtcMinus6(date, existingEndLocal);
+  }
   }
 
   // Update the class session
@@ -301,8 +355,8 @@ export async function getClassesByDateRange(data: DateRangeParams) {
   }
 
   // Validate date format
-  const startDateObj = new Date(startDate);
-  const endDateObj = new Date(endDate);
+  const startDateObj = dateOnlyUtcFromUtcMinus6(startDate);
+  const endDateObj = dateOnlyUtcFromUtcMinus6(endDate);
 
   if (isNaN(startDateObj.getTime()) || isNaN(endDateObj.getTime())) {
     throw new Error("Invalid date format. Use YYYY-MM-DD");
@@ -313,20 +367,10 @@ export async function getClassesByDateRange(data: DateRangeParams) {
   }
 
   // Create start and end of day boundaries
-  const startOfRange = new Date(
-    startDateObj.getFullYear(),
-    startDateObj.getMonth(),
-    startDateObj.getDate()
+  const startOfRange = dateOnlyUtcFromUtcMinus6(
+    startDate
   );
-  const endOfRange = new Date(
-    endDateObj.getFullYear(),
-    endDateObj.getMonth(),
-    endDateObj.getDate(),
-    23,
-    59,
-    59,
-    999
-  );
+  const endOfRange = endOfDayUtcFromUtcMinus6(endDate);
 
   // Fetch classes within the date range
   const classes = await prisma.classSession.findMany({
@@ -398,8 +442,8 @@ export async function getClassesByDateRangeServer(
   }
 
   // Parse the date strings and create start/end of day
-  const startDateObj = new Date(startDate);
-  const endDateObj = new Date(endDate);
+  const startDateObj = dateOnlyUtcFromUtcMinus6(startDate);
+  const endDateObj = dateOnlyUtcFromUtcMinus6(endDate);
 
   // Validate date range
   if (startDateObj > endDateObj) {
@@ -407,20 +451,8 @@ export async function getClassesByDateRangeServer(
   }
 
   // Create start of start date and end of end date
-  const startOfRange = new Date(
-    startDateObj.getFullYear(),
-    startDateObj.getMonth(),
-    startDateObj.getDate()
-  );
-  const endOfRange = new Date(
-    endDateObj.getFullYear(),
-    endDateObj.getMonth(),
-    endDateObj.getDate(),
-    23,
-    59,
-    59,
-    999
-  );
+  const startOfRange = dateOnlyUtcFromUtcMinus6(startDate);
+  const endOfRange = endOfDayUtcFromUtcMinus6(endDate);
 
   // Fetch all classes within the date range
   const classes = await prisma.classSession.findMany({

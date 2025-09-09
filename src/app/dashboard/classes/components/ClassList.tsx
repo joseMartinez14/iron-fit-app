@@ -97,7 +97,7 @@ export function ClassList({
     // Reset to page 1 when classes change (e.g., after filtering or refresh)
     useMemo(() => {
         setCurrentPage(1);
-    }, [classes.length]);
+    }, [classes]);
 
     if (loading && classes.length === 0) {
         return (
