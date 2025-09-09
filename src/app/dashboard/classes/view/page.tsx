@@ -1,7 +1,5 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-
 const sampleClass = {
     name: "Power Yoga",
     description: "Dynamic flow yoga session",
@@ -17,8 +15,6 @@ const sampleClass = {
 };
 
 export default function ClassDetailPage() {
-    const { id } = useParams();
-
     return (
         <div className="p-6 w-full mx-auto space-y-6">
             <div className="flex items-center justify-between">

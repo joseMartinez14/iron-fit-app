@@ -9,7 +9,7 @@ export default function DashboardPage() {
             {/* Main Content */}
             <main className="flex-1 bg-app-bg p-6 overflow-y-auto w-full">
                 <h1 className="text-2xl font-semibold mb-4">Dashboard</h1>
-                <p className="text-gray-600 mb-6">Welcome back! Here's what's happening today.</p>
+                <p className="text-gray-600 mb-6">{`Welcome back! Here's what's happening today.`}</p>
 
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -22,7 +22,7 @@ export default function DashboardPage() {
                 {/* Today's Classes */}
                 <div className="mb-8">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-lg font-semibold">Today's Classes</h2>
+                        <h2 className="text-lg font-semibold">{`Today's Classes`}</h2>
                         <Button variant="link">View All</Button>
                     </div>
                     <div className="bg-white shadow rounded-lg overflow-hidden">
