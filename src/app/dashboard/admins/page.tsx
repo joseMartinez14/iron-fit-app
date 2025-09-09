@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AdminsPage from "@/components/admins/AdminsPage";
 import { getAllAdmins } from "@/app/api/protected/admins/services";
 import isAuthenticated from "@/lib/authUtils";
