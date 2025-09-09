@@ -3,9 +3,21 @@ import { NextRequest } from "next/server";
 import { deleteAdminByClerkId, upsertAdminFromClerk } from "./service";
 import { UserJSON } from "@clerk/nextjs/server";
 
+export const runtime = "nodejs";
+
 export async function POST(req: NextRequest) {
   try {
-    const evt = await verifyWebhook(req);
+    const signingSecret =
+      process.env.CLERK_WEBHOOK_SIGNING_SECRET ||
+      process.env.CLERK_WEBHOOK_SECRET ||
+      process.env.WEBHOOK_SECRET;
+
+    if (!signingSecret) {
+      console.error("Missing Clerk webhook signing secret env var");
+      return new Response("Server misconfigured", { status: 500 });
+    }
+
+    const evt = await verifyWebhook(req, { signingSecret });
 
     // Do something with payload
     // For this guide, log payload to console

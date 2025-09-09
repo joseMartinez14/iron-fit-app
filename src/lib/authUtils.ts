@@ -1,6 +1,5 @@
 import { checkAdminAuth } from "@/app/api/service";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 
 type AuthResult = {
   message: string;
@@ -48,12 +47,5 @@ export default async function isAuthenticated(): Promise<AuthResult> {
       userID: null,
       status: false,
     };
-  }
-}
-
-export async function MyPage() {
-  const authResult = await isAuthenticated();
-  if (!authResult.status) {
-    redirect("/not-admin"); // or any page you want
   }
 }
