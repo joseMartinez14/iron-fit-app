@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ReservationStatus {
+  reserved
+  cancelled
+  attended
+  missed
+}
+
+enum PaymentStatus {
+  paid
+  pending
+  failed
+}
+
+model Admin {
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  phone      String?
+  isActive   Boolean  @default(false)
+  superAdmin Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  // Clerk sync (optional)
+  clerkId String? @unique
+
+  // Relations
+  checkedInLogs   AttendanceLog[] @relation("CheckedInBy")
+  ClassSession    ClassSession[]  @relation("AdminClasses")
+  createdPayments Payment[]       @relation("PaymentCreatedBy") // Add this relation
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  userName  String   @unique
+  password  String
+
+  // Relations
+  payments       Payment[]
+  attendanceLogs AttendanceLog[]
+  clientGroups   ClientGroupMembership[] // Many-to-many with ClientGroup
+}
+
+model ClientGroup {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+
+  // Relations
+  members ClientGroupMembership[] // Many-to-many with Client
+}
+
+// Junction table for many-to-many relationship between Client and ClientGroup
+model ClientGroupMembership {
+  id String @id @default(cuid())
+
+  // Relations
+  client        Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId      String
+  clientGroup   ClientGroup @relation(fields: [clientGroupId], references: [id], onDelete: Cascade)
+  clientGroupId String
+
+  // Ensure a client can only be in a group once (active membership)
+  @@unique([clientId, clientGroupId])
+}
+
+model ClassSession {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  location    String?
+  capacity    Int
+  date        DateTime
+  startTime   DateTime
+  endTime     DateTime
+  isCancelled Boolean  @default(false)
+
+  instructor   Admin  @relation("AdminClasses", fields: [instructorID], references: [id])
+  instructorID String
+
+  attendanceLogs AttendanceLog[]
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  amount      Float
+  status      PaymentStatus
+  paymentDate DateTime      @default(now())
+  validUntil  DateTime
+  notes       String? // Add notes field
+  createdAt   DateTime      @default(now()) // Add created timestamp
+  updatedAt   DateTime      @updatedAt // Add updated timestamp
+
+  // Relations
+  client      Client @relation(fields: [clientId], references: [id])
+  clientId    String
+  createdBy   Admin  @relation("PaymentCreatedBy", fields: [createdById], references: [id])
+  createdById String
+
+  @@map("Payment")
+}
+
+model AttendanceLog {
+  id          String   @id @default(cuid())
+  checkInTime DateTime @default(now())
+
+  // Relations
+  session       ClassSession @relation(fields: [sessionId], references: [id])
+  sessionId     String
+  client        Client       @relation(fields: [clientId], references: [id])
+  clientId      String
+  checkedInBy   Admin?       @relation("CheckedInBy", fields: [checkedInById], references: [id])
+  checkedInById String?
+}
