@@ -8,6 +8,7 @@ const isProtectedRoute = createRouteMatcher(["/api/protected(.*)"]);
 const defaultAllowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://iron-fit-client.netlify.app/",
 ];
 
 function getAllowedOrigins(): string[] {
