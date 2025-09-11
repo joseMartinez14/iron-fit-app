@@ -79,7 +79,7 @@ export function ClassList({
     };
 
     const formatTime = (date: Date) => {
-        return new Date(date).toLocaleTimeString('en-US', {
+        return new Date(date).toLocaleTimeString('es', {
             hour: '2-digit',
             minute: '2-digit',
             hour12: true,
@@ -87,7 +87,7 @@ export function ClassList({
     };
 
     const formatDate = (date: Date) => {
-        return new Date(date).toLocaleDateString('en-US', {
+        return new Date(date).toLocaleDateString('es', {
             weekday: 'short',
             month: 'short',
             day: 'numeric',
@@ -102,7 +102,7 @@ export function ClassList({
     if (loading && classes.length === 0) {
         return (
             <div className="bg-white rounded-lg shadow p-8 text-center">
-                <div className="animate-pulse">Loading classes...</div>
+                <div className="animate-pulse">Cargando clases...</div>
             </div>
         );
     }
@@ -116,7 +116,7 @@ export function ClassList({
                         onClick={onRefresh}
                         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                     >
-                        Retry
+                        Reintentar
                     </button>
                 )}
             </div>
@@ -130,12 +130,12 @@ export function ClassList({
                 <table className="min-w-full text-sm">
                     <thead className="text-left bg-gray-50">
                         <tr>
-                            <th className="px-4 py-3">Class Info</th>
-                            <th className="px-4 py-3">Schedule</th>
+                            <th className="px-4 py-3">Información de la clase</th>
+                            <th className="px-4 py-3">Horario</th>
                             <th className="px-4 py-3">Instructor</th>
-                            <th className="px-4 py-3">Capacity</th>
-                            <th className="px-4 py-3">Status</th>
-                            <th className="px-4 py-3">Actions</th>
+                            <th className="px-4 py-3">Capacidad</th>
+                            <th className="px-4 py-3">Estado</th>
+                            <th className="px-4 py-3">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -165,21 +165,21 @@ export function ClassList({
                                                 : 'bg-green-100 text-green-700'
                                                 }`}
                                         >
-                                            {classSession.isCancelled ? 'Cancelled' : 'Active'}
+                                            {classSession.isCancelled ? 'Cancelada' : 'Activa'}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3 space-x-2">
                                         <button
                                             onClick={() => handleEditClass(classSession.id)}
                                             className="hover:bg-gray-100 p-1 rounded transition-colors duration-150"
-                                            title="Edit class"
+                                            title="Editar clase"
                                         >
                                             ✏️
                                         </button>
                                         <button
                                             onClick={() => handleDeleteClass(classSession.id)}
                                             className="hover:bg-gray-100 p-1 rounded transition-colors duration-150"
-                                            title="Delete class"
+                                            title="Eliminar clase"
                                         >
                                             🗑️
                                         </button>
@@ -189,7 +189,7 @@ export function ClassList({
                         ) : (
                             <tr>
                                 <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
-                                    No classes found
+                                    No se encontraron clases
                                 </td>
                             </tr>
                         )}
@@ -201,7 +201,7 @@ export function ClassList({
             {pagination.totalPages > 1 && (
                 <div className="px-4 py-3 border-t bg-gray-50 flex items-center justify-between">
                     <div className="text-sm text-gray-700">
-                        Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, pagination.total)} of {pagination.total} results
+                        Mostrando {((currentPage - 1) * itemsPerPage) + 1} a {Math.min(currentPage * itemsPerPage, pagination.total)} de {pagination.total} resultados
                     </div>
 
                     <div className="flex items-center space-x-2">
@@ -214,7 +214,7 @@ export function ClassList({
                                 : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                                 }`}
                         >
-                            Previous
+                            Anterior
                         </button>
 
                         {/* Page Numbers */}
@@ -253,7 +253,7 @@ export function ClassList({
                                 : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                                 }`}
                         >
-                            Next
+                            Siguiente
                         </button>
                     </div>
                 </div>

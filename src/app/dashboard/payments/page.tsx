@@ -46,15 +46,15 @@ export default async function PaymentsPage() {
         return (
             <div className="py-6 px-3 space-y-6">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                    <div className="text-red-600 font-medium mb-2">Error Loading Payments</div>
+                    <div className="text-red-600 font-medium mb-2">Error al cargar pagos</div>
                     <div className="text-red-500 text-sm">
-                        {error instanceof Error ? error.message : 'An unexpected error occurred'}
+                        {error instanceof Error ? error.message : 'Ocurrió un error inesperado'}
                     </div>
                     <button
                         onClick={() => window.location.reload()}
                         className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                     >
-                        Retry
+                        Reintentar
                     </button>
                 </div>
             </div>

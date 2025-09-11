@@ -11,11 +11,11 @@ export default function AddClassPage() {
 
     return (
         <div className="p-6 w-full mx-auto">
-            <h1 className="text-2xl font-semibold mb-4">Add New Class</h1>
+            <h1 className="text-2xl font-semibold mb-4">Agregar nueva clase</h1>
 
-            {/* Class Type Selection */}
+            {/* Selección de tipo de clase */}
             <div className="mb-6">
-                <label className="block font-medium mb-2">Class Type</label>
+                <label className="block font-medium mb-2">Tipo de clase</label>
                 <div className="flex gap-4">
                     <button
                         type="button"
@@ -25,7 +25,7 @@ export default function AddClassPage() {
                             : 'bg-white text-black border-gray-300'
                             }`}
                     >
-                        Single Class
+                        Clase única
                     </button>
                     <button
                         type="button"
@@ -35,7 +35,7 @@ export default function AddClassPage() {
                             : 'bg-white text-black border-gray-300'
                             }`}
                     >
-                        Recurring Class
+                        Clase recurrente
                     </button>
                 </div>
             </div>

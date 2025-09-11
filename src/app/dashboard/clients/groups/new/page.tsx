@@ -61,6 +61,6 @@ export default async function NewGroupPageWrapper() {
 
 // Optional: Add metadata for the page
 export const metadata = {
-    title: 'Create New Group - Iron Fit',
-    description: 'Create a new client group and select members',
+    title: 'Crear nuevo grupo - Iron Fit',
+    description: 'Crea un nuevo grupo de clientes y selecciona miembros',
 };

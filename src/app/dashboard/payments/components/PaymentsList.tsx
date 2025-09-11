@@ -50,7 +50,7 @@ export default function PaymentsList({
     onDeletePayment,
     pageSize = 10,
     enableActions = true,
-    title = 'Payments',
+    title = 'Pagos',
     showAddButton = true,
     onFilterChange,
     initialStats,
@@ -126,6 +126,19 @@ export default function PaymentsList({
                 return 'bg-red-100 text-red-700';
             default:
                 return 'bg-gray-100 text-gray-700';
+        }
+    };
+
+    const statusLabel = (status: string) => {
+        switch (status) {
+            case 'paid':
+                return 'Pagado';
+            case 'pending':
+                return 'Pendiente';
+            case 'failed':
+                return 'Fallido';
+            default:
+                return status;
         }
     };
 
@@ -211,7 +224,7 @@ export default function PaymentsList({
                 <div>
                     <h1 className="text-2xl font-semibold">{title}</h1>
                     <p className="text-gray-500 text-sm">
-                        {filteredPayments.length} of {payments.length} payments
+                        {filteredPayments.length} de {payments.length} pagos
                     </p>
                 </div>
                 <div className="flex gap-2">
@@ -221,7 +234,7 @@ export default function PaymentsList({
                             className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
                             disabled={loading}
                         >
-                            {loading ? 'Refreshing...' : 'Refresh'}
+                            {loading ? 'Actualizando...' : 'Actualizar'}
                         </button>
                     )}
                     {showAddButton && (
@@ -229,7 +242,7 @@ export default function PaymentsList({
                             onClick={handleAddPayment}
                             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                         >
-                            Log Payment
+                            Registrar pago
                         </button>
                     )}
                 </div>
@@ -239,38 +252,38 @@ export default function PaymentsList({
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="bg-white p-4 rounded-lg shadow">
                     <div className="text-2xl font-bold text-gray-900">{stats.totalPayments}</div>
-                    <div className="text-sm text-gray-500">Total Payments</div>
+                    <div className="text-sm text-gray-500">Pagos totales</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow">
                     <div className="text-2xl font-bold text-green-600">{stats.paidPayments}</div>
-                    <div className="text-sm text-gray-500">Paid</div>
+                    <div className="text-sm text-gray-500">Pagados</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow">
                     <div className="text-2xl font-bold text-yellow-600">{stats.pendingPayments}</div>
-                    <div className="text-sm text-gray-500">Pending</div>
+                    <div className="text-sm text-gray-500">Pendientes</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow">
                     <div className="text-2xl font-bold text-red-600">{stats.failedPayments}</div>
-                    <div className="text-sm text-gray-500">Failed</div>
+                    <div className="text-sm text-gray-500">Fallidos</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow">
                     <div className="text-2xl font-bold text-blue-600">{formatCurrency(stats.totalAmount)}</div>
-                    <div className="text-sm text-gray-500">Total Revenue</div>
+                    <div className="text-sm text-gray-500">Ingresos totales</div>
                 </div>
             </div>
 
             {/* Filters */}
             <div className="bg-white p-4 rounded-lg shadow space-y-4">
-                <h3 className="font-medium">Filters</h3>
+                <h3 className="font-medium">Filtros</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Search */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Search
+                            Buscar
                         </label>
                         <input
                             type="text"
-                            placeholder="Search by client name, phone, or payment ID..."
+                            placeholder="Buscar por nombre del cliente, teléfono o ID de pago..."
                             value={searchTerm}
                             onChange={(e) => handleFilterChange('search', e.target.value)}
                             className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -280,24 +293,24 @@ export default function PaymentsList({
                     {/* Status Filter */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Status
+                            Estado
                         </label>
                         <select
                             value={statusFilter}
                             onChange={(e) => handleFilterChange('status', e.target.value)}
                             className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                         >
-                            <option value="all">All Status</option>
-                            <option value="paid">Paid</option>
-                            <option value="pending">Pending</option>
-                            <option value="failed">Failed</option>
+                            <option value="all">Todos los estados</option>
+                            <option value="paid">Pagados</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="failed">Fallidos</option>
                         </select>
                     </div>
 
                     {/* Date Filter */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Payment Date
+                            Fecha de pago
                         </label>
                         <input
                             type="date"
@@ -321,7 +334,7 @@ export default function PaymentsList({
                         className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                     />
                     <label htmlFor="includeInactive" className="ml-2 block text-sm text-gray-700">
-                        Include Inactive Clients
+                        Incluir clientes inactivos
                     </label>
                 </div>
 
@@ -337,7 +350,7 @@ export default function PaymentsList({
                             }}
                             className="text-sm text-gray-600 hover:text-gray-800 underline"
                         >
-                            Clear all filters
+                            Limpiar todos los filtros
                         </button>
                     </div>
                 )}
@@ -349,14 +362,14 @@ export default function PaymentsList({
                     <table className="min-w-full text-sm">
                         <thead className="bg-gray-50 text-left">
                             <tr>
-                                <th className="px-4 py-3 font-medium">Payment ID</th>
-                                <th className="px-4 py-3 font-medium">Client</th>
-                                <th className="px-4 py-3 font-medium">Amount</th>
-                                <th className="px-4 py-3 font-medium">Status</th>
-                                <th className="px-4 py-3 font-medium">Payment Date</th>
-                                <th className="px-4 py-3 font-medium">Valid Until</th>
+                                <th className="px-4 py-3 font-medium">ID de pago</th>
+                                <th className="px-4 py-3 font-medium">Cliente</th>
+                                <th className="px-4 py-3 font-medium">Monto</th>
+                                <th className="px-4 py-3 font-medium">Estado</th>
+                                <th className="px-4 py-3 font-medium">Fecha de pago</th>
+                                <th className="px-4 py-3 font-medium">Válido hasta</th>
                                 {enableActions && (
-                                    <th className="px-4 py-3 font-medium">Actions</th>
+                                    <th className="px-4 py-3 font-medium">Acciones</th>
                                 )}
                             </tr>
                         </thead>
@@ -380,7 +393,7 @@ export default function PaymentsList({
                                             <span
                                                 className={`px-2 py-1 text-xs rounded-full font-medium ${getStatusBadgeColor(payment.status)}`}
                                             >
-                                                {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                                                {statusLabel(payment.status)}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-gray-600">
@@ -390,7 +403,7 @@ export default function PaymentsList({
                                             <div className={`text-sm ${isExpired(payment.validUntil) ? 'text-red-600 font-medium' : 'text-gray-600'}`}>
                                                 {new Date(payment.validUntil).toLocaleDateString()}
                                                 {isExpired(payment.validUntil) && (
-                                                    <div className="text-xs">Expired</div>
+                                                    <div className="text-xs">Vencido</div>
                                                 )}
                                             </div>
                                         </td>
@@ -402,7 +415,7 @@ export default function PaymentsList({
                                                             onClick={() => onViewPayment(payment.id)}
                                                             className="text-blue-600 text-xs hover:underline"
                                                         >
-                                                            View
+                                                            Ver
                                                         </button>
                                                     )}
                                                     {onEditPayment && (
@@ -410,7 +423,7 @@ export default function PaymentsList({
                                                             onClick={() => onEditPayment(payment.id)}
                                                             className="text-gray-600 text-xs hover:underline"
                                                         >
-                                                            Edit
+                                                            Editar
                                                         </button>
                                                     )}
                                                     {payment.status === 'pending' && onMarkPaid && (
@@ -418,7 +431,7 @@ export default function PaymentsList({
                                                             onClick={() => onMarkPaid(payment.id)}
                                                             className="text-green-600 text-xs hover:underline"
                                                         >
-                                                            Mark Paid
+                                                            Marcar como pagado
                                                         </button>
                                                     )}
                                                     {onDeletePayment && (
@@ -426,7 +439,7 @@ export default function PaymentsList({
                                                             onClick={() => onDeletePayment(payment.id)}
                                                             className="text-red-600 text-xs hover:underline"
                                                         >
-                                                            Delete
+                                                            Eliminar
                                                         </button>
                                                     )}
                                                 </div>
@@ -437,7 +450,7 @@ export default function PaymentsList({
                             ) : (
                                 <tr>
                                     <td colSpan={enableActions ? 7 : 6} className="px-4 py-8 text-center text-gray-500">
-                                        No payments found matching your filters
+                                        No se encontraron pagos que coincidan con tus filtros
                                     </td>
                                 </tr>
                             )}
@@ -449,7 +462,7 @@ export default function PaymentsList({
                 {totalPages > 1 && (
                     <div className="border-t bg-gray-50 px-4 py-3 flex items-center justify-between">
                         <div className="text-sm text-gray-700">
-                            Showing {start + 1} to {Math.min(start + pageSize, filteredPayments.length)} of {filteredPayments.length} results
+                            Mostrando {start + 1} a {Math.min(start + pageSize, filteredPayments.length)} de {filteredPayments.length} resultados
                         </div>
                         <div className="flex space-x-2">
                             <button
@@ -457,17 +470,17 @@ export default function PaymentsList({
                                 disabled={page === 1}
                                 className="px-3 py-1 rounded border text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                             >
-                                Previous
+                                Anterior
                             </button>
                             <span className="px-3 py-1 text-sm">
-                                Page {page} of {totalPages}
+                                Página {page} de {totalPages}
                             </span>
                             <button
                                 onClick={nextPage}
                                 disabled={page === totalPages}
                                 className="px-3 py-1 rounded border text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                             >
-                                Next
+                                Siguiente
                             </button>
                         </div>
                     </div>

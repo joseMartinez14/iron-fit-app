@@ -39,27 +39,27 @@ export default function ClassDetailPage() {
                     <span className="font-medium">Instructor:</span> {sampleClass.instructor}
                 </div>
                 <div>
-                    <span className="font-medium">Days:</span> {sampleClass.schedule.join(', ')}
+                    <span className="font-medium">Días:</span> {sampleClass.schedule.join(', ')}
                 </div>
                 <div>
-                    <span className="font-medium">Time:</span> {sampleClass.time}
+                    <span className="font-medium">Hora:</span> {sampleClass.time}
                 </div>
                 <div>
-                    <span className="font-medium">Capacity:</span>{' '}
+                    <span className="font-medium">Capacidad:</span>{' '}
                     {sampleClass.attendees.length} / {sampleClass.capacity}
                 </div>
             </div>
 
             <div className="mt-6">
-                <h2 className="text-lg font-semibold mb-2">Attendees</h2>
+                <h2 className="text-lg font-semibold mb-2">Asistentes</h2>
                 <div className="bg-white rounded shadow overflow-x-auto">
                     <table className="min-w-full text-sm">
                         <thead className="bg-gray-50 text-left">
                             <tr>
-                                <th className="px-4 py-2">Name</th>
+                                <th className="px-4 py-2">Nombre</th>
                                 <th className="px-4 py-2">Email</th>
-                                <th className="px-4 py-2">Status</th>
-                                <th className="px-4 py-2">Actions</th>
+                                <th className="px-4 py-2">Estado</th>
+                                <th className="px-4 py-2">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,8 +78,8 @@ export default function ClassDetailPage() {
                                         </span>
                                     </td>
                                     <td className="px-4 py-2 space-x-2">
-                                        <button className="text-blue-600 text-xs hover:underline">Mark Attended</button>
-                                        <button className="text-red-600 text-xs hover:underline">Remove</button>
+                                        <button className="text-blue-600 text-xs hover:underline">Marcar asistido</button>
+                                        <button className="text-red-600 text-xs hover:underline">Eliminar</button>
                                     </td>
                                 </tr>
                             ))}

@@ -74,16 +74,16 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
     };
 
     const handleDeleteGroup = async (groupId: string) => {
-        const confirmed = confirm('Are you sure you want to delete this group? This action cannot be undone.');
+        const confirmed = confirm('¿Seguro que deseas eliminar este grupo? Esta acción no se puede deshacer.');
         if (!confirmed) return;
 
         try {
             // TODO: Implement delete group API call
             console.log('Deleting group:', groupId);
-            alert('Group deletion functionality will be implemented');
+            alert('La funcionalidad de eliminación de grupos será implementada');
         } catch (error) {
-            console.error('Error deleting group:', error);
-            alert('Failed to delete group');
+            console.error('Error eliminando grupo:', error);
+            alert('No se pudo eliminar el grupo');
         }
     };
 
@@ -99,10 +99,10 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                 router.push(`/dashboard/clients/${clientId}/groups`);
                 break;
             case 'remove':
-                const confirmed = confirm('Are you sure you want to remove this client?');
+                const confirmed = confirm('¿Seguro que deseas eliminar este cliente?');
                 if (confirmed) {
                     console.log('Removing client:', clientId);
-                    alert('Client removal functionality will be implemented');
+                    alert('La funcionalidad de eliminación de clientes será implementada');
                 }
                 break;
             default:
@@ -115,9 +115,9 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-xl sm:text-2xl font-semibold">Clients</h1>
+                    <h1 className="text-xl sm:text-2xl font-semibold">Clientes</h1>
                     <p className="text-gray-500 text-sm">
-                        {filteredClients.length} of {allClients.length} clients
+                        {filteredClients.length} de {allClients.length} clientes
                     </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -125,7 +125,7 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                         onClick={() => router.push('/dashboard/clients/add')}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm sm:text-base whitespace-nowrap"
                     >
-                        Add Client
+                        Agregar cliente
                     </button>
                 </div>
             </div>
@@ -264,15 +264,15 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
             </div>
 
             {/* Client Groups Summary */}
-            <div className="bg-white p-4 rounded-lg shadow">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 gap-3">
-                    <h3 className="font-medium text-sm sm:text-base">Client Groups</h3>
+                <div className="bg-white p-4 rounded-lg shadow">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 gap-3">
+                    <h3 className="font-medium text-sm sm:text-base">Grupos de clientes</h3>
                     <div className="flex gap-2">
                         <button
                             onClick={openAddGroupModal}
                             className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 whitespace-nowrap"
                         >
-                            Add Group
+                            Agregar grupo
                         </button>
                     </div>
                 </div>
@@ -305,7 +305,7 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                                 openEditGroupModal(group);
                                             }}
                                             className="p-1 text-blue-600 hover:bg-blue-50 rounded-l text-xs"
-                                            title="Edit group"
+                                            title="Editar grupo"
                                         >
                                             ✏️
                                         </button>
@@ -315,7 +315,7 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                                 handleDeleteGroup(group.id);
                                             }}
                                             className="p-1 text-red-600 hover:bg-red-50 rounded-r text-xs"
-                                            title="Delete group"
+                                            title="Eliminar grupo"
                                         >
                                             🗑️
                                         </button>
@@ -326,12 +326,12 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                     </div>
                 ) : (
                     <div className="text-center py-4 text-gray-500">
-                        <p className="text-sm">No client groups found.</p>
+                        <p className="text-sm">No se encontraron grupos de clientes.</p>
                         <button
                             onClick={openAddGroupModal}
                             className="mt-2 text-green-600 hover:text-green-800 text-sm underline"
                         >
-                            Create your first group
+                            Crea tu primer grupo
                         </button>
                     </div>
                 )}
@@ -344,12 +344,12 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                     <table className="min-w-full text-sm">
                         <thead className="bg-gray-50 text-left">
                             <tr>
-                                <th className="px-3 lg:px-4 py-3 font-medium">Name</th>
-                                <th className="px-3 lg:px-4 py-3 font-medium">Phone</th>
-                                <th className="px-3 lg:px-4 py-3 font-medium">Status</th>
-                                <th className="px-3 lg:px-4 py-3 font-medium">Groups</th>
-                                <th className="px-3 lg:px-4 py-3 font-medium hidden lg:table-cell">Join Date</th>
-                                <th className="px-3 lg:px-4 py-3 font-medium">Actions</th>
+                                <th className="px-3 lg:px-4 py-3 font-medium">Nombre</th>
+                                <th className="px-3 lg:px-4 py-3 font-medium">Teléfono</th>
+                                <th className="px-3 lg:px-4 py-3 font-medium">Estado</th>
+                                <th className="px-3 lg:px-4 py-3 font-medium">Grupos</th>
+                                <th className="px-3 lg:px-4 py-3 font-medium hidden lg:table-cell">Fecha de registro</th>
+                                <th className="px-3 lg:px-4 py-3 font-medium">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -370,7 +370,7 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                                     : 'bg-red-100 text-red-700'
                                                     }`}
                                             >
-                                                {client.isActive ? 'Active' : 'Inactive'}
+                                                {client.isActive ? 'Activo' : 'Inactivo'}
                                             </span>
                                         </td>
                                         <td className="px-3 lg:px-4 py-3">
@@ -386,11 +386,11 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                                         </span>
                                                     ))
                                                 ) : (
-                                                    <span className="text-gray-400 text-xs italic">No groups</span>
+                                                    <span className="text-gray-400 text-xs italic">Sin grupos</span>
                                                 )}
                                                 {client.groups.length > 2 && (
                                                     <span className="text-xs text-gray-500">
-                                                        +{client.groups.length - 2} more
+                                                        +{client.groups.length - 2} más
                                                     </span>
                                                 )}
                                             </div>
@@ -404,13 +404,13 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                                     onClick={() => handleClientAction('edit', client.id)}
                                                     className="text-gray-600 text-xs hover:underline"
                                                 >
-                                                    Edit
+                                                    Editar
                                                 </button>
                                                 <button
                                                     onClick={() => handleClientAction('remove', client.id)}
                                                     className="text-red-600 text-xs hover:underline hidden lg:inline"
                                                 >
-                                                    Remove
+                                                    Eliminar
                                                 </button>
                                             </div>
                                         </td>
@@ -420,8 +420,8 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                 <tr>
                                     <td colSpan={6} className="px-4 py-8 text-center text-gray-500 text-sm">
                                         {searchTerm || selectedGroup !== 'all' || statusFilter !== 'all'
-                                            ? 'No clients found matching your filters'
-                                            : 'No clients found. Get started by adding your first client.'
+                                            ? 'No se encontraron clientes que coincidan con tus filtros'
+                                            : 'No se encontraron clientes. Comienza agregando tu primer cliente.'
                                         }
                                     </td>
                                 </tr>
@@ -508,8 +508,8 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                     <div className="bg-white rounded-lg shadow p-8 text-center text-gray-500">
                         <p className="text-sm">
                             {searchTerm || selectedGroup !== 'all' || statusFilter !== 'all'
-                                ? 'No clients found matching your filters'
-                                : 'No clients found. Get started by adding your first client.'
+                                ? 'No se encontraron clientes que coincidan con tus filtros'
+                                : 'No se encontraron clientes. Comienza agregando tu primer cliente.'
                             }
                         </p>
                     </div>
@@ -521,7 +521,7 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                 <div className="bg-white rounded-lg shadow">
                     <div className="border-t bg-gray-50 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div className="text-sm text-gray-700 text-center sm:text-left">
-                            Showing {start + 1} to {Math.min(start + pageSize, filteredClients.length)} of {filteredClients.length} results
+                            Mostrando {start + 1} a {Math.min(start + pageSize, filteredClients.length)} de {filteredClients.length} resultados
                         </div>
                         <div className="flex justify-center sm:justify-end space-x-2">
                             <button
@@ -529,17 +529,17 @@ export default function ClientsPage({ allClients, allClientGroups }: ClientsPage
                                 disabled={page === 1}
                                 className="px-3 py-1 rounded border text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                             >
-                                Previous
+                                Anterior
                             </button>
                             <span className="px-3 py-1 text-sm">
-                                Page {page} of {totalPages}
+                                Página {page} de {totalPages}
                             </span>
                             <button
                                 onClick={nextPage}
                                 disabled={page === totalPages}
                                 className="px-3 py-1 rounded border text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                             >
-                                Next
+                                Siguiente
                             </button>
                         </div>
                     </div>

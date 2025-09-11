@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
 
-const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const daysOfWeek = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
 // Helper function to get today's date in YYYY-MM-DD format
 const getTodayDate = () => {
@@ -15,15 +15,15 @@ const getTodayDate = () => {
 };
 
 const recurringClassSchema = z.object({
-    name: z.string().min(1, 'Class name is required'),
+    name: z.string().min(1, 'El nombre de la clase es obligatorio'),
     description: z.string().optional(),
-    days: z.array(z.string()).min(1, 'Please select at least one day'),
-    startDate: z.string().min(1, 'Start date is required'),
-    endDate: z.string().min(1, 'End date is required'),
-    startTime: z.string().min(1, 'Start time is required'),
-    endTime: z.string().min(1, 'End time is required'),
-    instructor: z.string().min(1, 'Instructor is required'),
-    capacity: z.string().min(1, 'Capacity is required'),
+    days: z.array(z.string()).min(1, 'Selecciona al menos un día'),
+    startDate: z.string().min(1, 'La fecha de inicio es obligatoria'),
+    endDate: z.string().min(1, 'La fecha de fin es obligatoria'),
+    startTime: z.string().min(1, 'La hora de inicio es obligatoria'),
+    endTime: z.string().min(1, 'La hora de fin es obligatoria'),
+    instructor: z.string().min(1, 'El instructor es obligatorio'),
+    capacity: z.string().min(1, 'La capacidad es obligatoria'),
     isCancelled: z.boolean(),
 });
 
@@ -60,7 +60,7 @@ export default function RecurringClassForm() {
             if (response.data.success) {
                 setSubmitMessage({
                     type: 'success',
-                    text: response.data.message || 'Recurring classes created successfully!'
+                    text: response.data.message || '¡Clases recurrentes creadas con éxito!'
                 });
                 // Reset form
                 form.reset({
@@ -78,10 +78,10 @@ export default function RecurringClassForm() {
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.error('Error creating recurring classes:', error);
+            console.error('Error al crear clases recurrentes:', error);
             setSubmitMessage({
                 type: 'error',
-                text: error.response?.data?.error || 'Failed to create recurring classes. Please try again.'
+                text: error.response?.data?.error || 'No se pudieron crear las clases recurrentes. Intenta nuevamente.'
             });
         } finally {
             setIsSubmitting(false);
@@ -109,9 +109,9 @@ export default function RecurringClassForm() {
             )}
 
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
-                {/* Class Name */}
+                {/* Nombre de la clase */}
                 <div>
-                    <label className="block font-medium">Class Name</label>
+                    <label className="block font-medium">Nombre de la clase</label>
                     <Controller
                         name="name"
                         control={form.control}
@@ -120,7 +120,7 @@ export default function RecurringClassForm() {
                                 {...field}
                                 value={field.value || ''}
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter class name"
+                                placeholder="Ingresa el nombre de la clase"
                             />
                         )}
                     />
@@ -145,9 +145,9 @@ export default function RecurringClassForm() {
                     />
                 </div>
 
-                {/* Days Selection */}
+                {/* Selección de días */}
                 <div>
-                    <label className="block font-medium">Days of Week</label>
+                    <label className="block font-medium">Días de la semana</label>
                     <div className="flex flex-wrap gap-2 mt-2">
                         {daysOfWeek.map((day) => {
                             const selectedDays = form.watch('days') || [];
@@ -171,10 +171,10 @@ export default function RecurringClassForm() {
                     )}
                 </div>
 
-                {/* Start and End Date */}
+                {/* Fechas de inicio y fin */}
                 <div className="flex gap-4">
                     <div className="flex-1">
-                        <label className="block font-medium">Start Date</label>
+                        <label className="block font-medium">Fecha de inicio</label>
                         <Controller
                             name="startDate"
                             control={form.control}
@@ -192,7 +192,7 @@ export default function RecurringClassForm() {
                     </div>
 
                     <div className="flex-1">
-                        <label className="block font-medium">End Date</label>
+                        <label className="block font-medium">Fecha de fin</label>
                         <Controller
                             name="endDate"
                             control={form.control}
@@ -211,10 +211,10 @@ export default function RecurringClassForm() {
                     </div>
                 </div>
 
-                {/* Start and End Time */}
+                {/* Horarios */}
                 <div className="flex gap-4">
                     <div className="flex-1">
-                        <label className="block font-medium">Start Time</label>
+                        <label className="block font-medium">Hora de inicio</label>
                         <Controller
                             name="startTime"
                             control={form.control}
@@ -232,7 +232,7 @@ export default function RecurringClassForm() {
                     </div>
 
                     <div className="flex-1">
-                        <label className="block font-medium">End Time</label>
+                        <label className="block font-medium">Hora de fin</label>
                         <Controller
                             name="endTime"
                             control={form.control}
@@ -261,7 +261,7 @@ export default function RecurringClassForm() {
                             <input
                                 {...field}
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter instructor name"
+                                placeholder="Ingresa el nombre del instructor"
                             />
                         )}
                     />
@@ -270,9 +270,9 @@ export default function RecurringClassForm() {
                     )}
                 </div>
 
-                {/* Capacity */}
+                {/* Capacidad */}
                 <div>
-                    <label className="block font-medium">Capacity</label>
+                    <label className="block font-medium">Capacidad</label>
                     <Controller
                         name="capacity"
                         control={form.control}
@@ -282,7 +282,7 @@ export default function RecurringClassForm() {
                                 type="number"
                                 min="1"
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter capacity"
+                                placeholder="Ingresa la capacidad"
                             />
                         )}
                     />
@@ -291,9 +291,9 @@ export default function RecurringClassForm() {
                     )}
                 </div>
 
-                {/* Status */}
+                {/* Estado */}
                 <div>
-                    <label className="block font-medium">Status</label>
+                    <label className="block font-medium">Estado</label>
                     <Controller
                         name="isCancelled"
                         control={form.control}
@@ -304,8 +304,8 @@ export default function RecurringClassForm() {
                                 onChange={(e) => field.onChange(e.target.value === "true")}
                                 className="mt-1 w-full border px-3 py-2 rounded"
                             >
-                                <option value="false">Active</option>
-                                <option value="true">Cancelled</option>
+                                <option value="false">Activa</option>
+                                <option value="true">Cancelada</option>
                             </select>
                         )}
                     />
@@ -319,7 +319,7 @@ export default function RecurringClassForm() {
                         : 'bg-black hover:bg-gray-800'
                         }`}
                 >
-                    {isSubmitting ? 'Creating Classes...' : 'Save Recurring Class'}
+                    {isSubmitting ? 'Creando clases...' : 'Guardar clases recurrentes'}
                 </button>
             </form>
         </div>

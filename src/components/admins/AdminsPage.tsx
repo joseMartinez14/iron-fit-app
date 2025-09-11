@@ -65,8 +65,8 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
       setRows((prev) => prev.map((a) => (a.id === data.admin!.id ? data.admin! : a)));
       setConfirmDialog({ isOpen: false });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error";
-      alert(`Could not update admin: ${msg}`);
+      const msg = err instanceof Error ? err.message : "Error desconocido";
+      alert(`No se pudo actualizar el admin: ${msg}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -75,7 +75,7 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
   return (
     <div className="p-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Admins</h1>
+        <h1 className="text-2xl font-bold">Administradores</h1>
 
         <div className="flex items-center gap-2">
           <input
@@ -84,7 +84,7 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
               setQuery(e.target.value);
               setPage(1);
             }}
-            placeholder="Search name or email…"
+            placeholder="Buscar por nombre o email…"
             className="w-64 rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2"
           />
           <select
@@ -97,7 +97,7 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
           >
             {[10, 20, 50, 100].map((n) => (
               <option key={n} value={n}>
-                {n} / page
+                {n} / página
               </option>
             ))}
           </select>
@@ -108,9 +108,9 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50 text-left">
             <tr>
-              <Th>Name</Th>
+              <Th>Nombre</Th>
               <Th>Email</Th>
-              <Th>Active</Th>
+              <Th>Activo</Th>
               <Th>Super Admin</Th>
             </tr>
           </thead>
@@ -129,27 +129,21 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
                       className={
                         "rounded-lg px-2 py-1 text-xs font-semibold border hover:bg-gray-50"
                       }
-                      title={
-                        a.isActive ? "Deactivate admin" : "Activate admin"
-                      }
+                      title={a.isActive ? "Desactivar administrador" : "Activar administrador"}
                     >
-                      {a.isActive ? "Deactivate" : "Activate"}
+                      {a.isActive ? "Desactivar" : "Activar"}
                     </button>
                   </div>
                 </Td>
                 <Td>
                   <div className="flex items-center gap-2">
-                    <BoolBadge value={a.superAdmin} trueText="Yes" falseText="No" />
+                    <BoolBadge value={a.superAdmin} trueText="Sí" falseText="No" />
                     <button
                       onClick={() => toggleSuper(a.id)}
                       className="rounded-lg px-2 py-1 text-xs font-semibold border hover:bg-gray-50"
-                      title={
-                        a.superAdmin
-                          ? "Revoke super admin"
-                          : "Grant super admin"
-                      }
+                      title={a.superAdmin ? "Revocar super admin" : "Conceder super admin"}
                     >
-                      {a.superAdmin ? "Revoke" : "Grant"}
+                      {a.superAdmin ? "Revocar" : "Conceder"}
                     </button>
                   </div>
                 </Td>
@@ -159,7 +153,7 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
             {pageItems.length === 0 && (
               <tr>
                 <Td colSpan={4} className="py-10 text-center text-gray-500">
-                  No admins found{query ? ` for “${query}”` : ""}.
+                  No se encontraron administradores{query ? ` para “${query}”` : ""}.
                 </Td>
               </tr>
             )}
@@ -169,26 +163,26 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
         <span className="text-gray-600">
-          Showing {pageItems.length} of {total} • Page {pageSafe} / {totalPages}
+          Mostrando {pageItems.length} de {total} • Página {pageSafe} / {totalPages}
         </span>
         <div className="flex items-center gap-2">
           <PageBtn onClick={() => setPage(1)} disabled={pageSafe === 1}>
-            « First
+            « Primero
           </PageBtn>
           <PageBtn
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={pageSafe === 1}
           >
-            ‹ Prev
+            ‹ Anterior
           </PageBtn>
           <PageBtn
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={pageSafe >= totalPages}
           >
-            Next ›
+            Siguiente ›
           </PageBtn>
           <PageBtn onClick={() => setPage(totalPages)} disabled={pageSafe >= totalPages}>
-            Last »
+            Último »
           </PageBtn>
         </div>
       </div>
@@ -197,37 +191,37 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="max-w-md rounded-lg bg-white p-6 shadow-xl">
             <h3 className="mb-4 text-lg font-semibold">
-              {confirmDialog.action === "activate" && "Activate Admin"}
-              {confirmDialog.action === "deactivate" && "Deactivate Admin"}
-              {confirmDialog.action === "grant_super" && "Grant Super Admin"}
-              {confirmDialog.action === "revoke_super" && "Revoke Super Admin"}
+              {confirmDialog.action === "activate" && "Activar administrador"}
+              {confirmDialog.action === "deactivate" && "Desactivar administrador"}
+              {confirmDialog.action === "grant_super" && "Conceder Super Admin"}
+              {confirmDialog.action === "revoke_super" && "Revocar Super Admin"}
             </h3>
 
             <p className="mb-6 text-gray-600">
               {confirmDialog.action === "activate" && (
-                <>Are you sure you want to activate <strong>{confirmDialog.admin.name}</strong>?</>
+                <>¿Seguro que deseas activar a <strong>{confirmDialog.admin.name}</strong>?</>
               )}
               {confirmDialog.action === "deactivate" && (
-                <>Are you sure you want to deactivate <strong>{confirmDialog.admin.name}</strong>?</>
+                <>¿Seguro que deseas desactivar a <strong>{confirmDialog.admin.name}</strong>?</>
               )}
               {confirmDialog.action === "grant_super" && (
-                <>Are you sure you want to grant Super Admin to <strong>{confirmDialog.admin.name}</strong>?</>
+                <>¿Seguro que deseas conceder Super Admin a <strong>{confirmDialog.admin.name}</strong>?</>
               )}
               {confirmDialog.action === "revoke_super" && (
-                <>Are you sure you want to revoke Super Admin from <strong>{confirmDialog.admin.name}</strong>?</>
+                <>¿Seguro que deseas revocar Super Admin de <strong>{confirmDialog.admin.name}</strong>?</>
               )}
             </p>
 
             <div className="mb-4 rounded-lg bg-gray-50 p-3">
               <p className="text-sm text-gray-700">
                 {confirmDialog.action === "activate" &&
-                  "This will restore their access to the system."}
+                  "Esto restaurará su acceso al sistema."}
                 {confirmDialog.action === "deactivate" &&
-                  "This will disable their access to the system."}
+                  "Esto deshabilitará su acceso al sistema."}
                 {confirmDialog.action === "grant_super" &&
-                  "Super Admins can manage other admins and sensitive settings."}
+                  "Los Super Admin pueden gestionar otros admins y configuraciones sensibles."}
                 {confirmDialog.action === "revoke_super" &&
-                  "Removing Super Admin will restrict their elevated permissions."}
+                  "Quitar Super Admin restringirá sus permisos elevados."}
               </p>
             </div>
 
@@ -236,7 +230,7 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
                 onClick={() => setConfirmDialog({ isOpen: false })}
                 className="rounded-lg border px-4 py-2 text-gray-600 hover:bg-gray-50"
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 onClick={handleConfirmToggle}
@@ -252,11 +246,11 @@ export default function AdminsPage({ admins }: { admins: Admin[] }) {
                 }
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Saving..." :
-                  confirmDialog.action === "activate" ? "Activate" :
-                    confirmDialog.action === "deactivate" ? "Deactivate" :
-                      confirmDialog.action === "grant_super" ? "Grant" :
-                        "Revoke"
+                {isSubmitting ? "Guardando..." :
+                  confirmDialog.action === "activate" ? "Activar" :
+                    confirmDialog.action === "deactivate" ? "Desactivar" :
+                      confirmDialog.action === "grant_super" ? "Conceder" :
+                        "Revocar"
                 }
               </button>
             </div>
@@ -298,7 +292,7 @@ function Badge({ active }: { active: boolean }) {
         (active ? "bg-green-100 text-green-800" : "bg-gray-200 text-gray-700")
       }
     >
-      {active ? "Active" : "Inactive"}
+      {active ? "Activo" : "Inactivo"}
     </span>
   );
 }

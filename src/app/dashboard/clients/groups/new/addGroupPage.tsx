@@ -130,9 +130,9 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold">Create New Group</h1>
+                    <h1 className="text-2xl font-semibold">Crear nuevo grupo</h1>
                     <p className="text-gray-500 text-sm">
-                        Add a new client group and select members
+                        Agrega un nuevo grupo de clientes y selecciona miembros
                     </p>
                 </div>
                 <div className="flex gap-3">
@@ -141,7 +141,7 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                         disabled={isSubmitting}
                         className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
                     >
-                        Cancel
+                        Cancelar
                     </button>
                     <button
                         onClick={handleSave}
@@ -154,18 +154,18 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                         )}
-                        {isSubmitting ? 'Creating...' : 'Create Group'}
+                        {isSubmitting ? 'Creando...' : 'Crear grupo'}
                     </button>
                 </div>
             </div>
 
             {/* Group Details Form */}
             <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="text-lg font-medium mb-4">Group Details</h3>
+                <h3 className="text-lg font-medium mb-4">Detalles del grupo</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Group Name *
+                            Nombre del grupo *
                         </label>
                         <input
                             type="text"
@@ -173,28 +173,28 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                             onChange={(e) => setGroupForm({ ...groupForm, name: e.target.value })}
                             disabled={isSubmitting}
                             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100"
-                            placeholder="Enter group name"
+                            placeholder="Ingresa el nombre del grupo"
                             maxLength={50}
                         />
                         <p className="text-xs text-gray-500 mt-1">
-                            {groupForm.name.length}/50 characters
+                            {groupForm.name.length}/50 caracteres
                         </p>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Description
+                            Descripción
                         </label>
                         <textarea
                             value={groupForm.description}
                             onChange={(e) => setGroupForm({ ...groupForm, description: e.target.value })}
                             disabled={isSubmitting}
                             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100"
-                            placeholder="Enter group description"
+                            placeholder="Ingresa la descripción del grupo"
                             rows={3}
                             maxLength={500}
                         />
                         <p className="text-xs text-gray-500 mt-1">
-                            {groupForm.description.length}/500 characters
+                            {groupForm.description.length}/500 caracteres
                         </p>
                     </div>
                 </div>
@@ -217,7 +217,7 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                         </label>
                         <input
                             type="text"
-                            placeholder="Search by name or phone..."
+                            placeholder="Buscar por nombre o teléfono..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -225,16 +225,16 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Status
+                            Estado
                         </label>
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
                             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                         >
-                            <option value="all">All Status</option>
-                            <option value="active">Active Only</option>
-                            <option value="inactive">Inactive Only</option>
+                            <option value="all">Todos los estados</option>
+                            <option value="active">Solo activos</option>
+                            <option value="inactive">Solo inactivos</option>
                         </select>
                     </div>
                     <div className="flex items-end">
@@ -243,8 +243,8 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                             className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm"
                         >
                             {filteredClients.every(client => selectedClients.includes(client.id))
-                                ? 'Deselect All'
-                                : 'Select All'
+                                ? 'Deseleccionar todo'
+                                : 'Seleccionar todo'
                             }
                         </button>
                     </div>
@@ -264,10 +264,10 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                                             className="rounded border-gray-300"
                                         />
                                     </th>
-                                    <th className="px-4 py-3 text-left font-medium">Name</th>
-                                    <th className="px-4 py-3 text-left font-medium">Phone</th>
-                                    <th className="px-4 py-3 text-left font-medium">Status</th>
-                                    <th className="px-4 py-3 text-left font-medium">Join Date</th>
+                                    <th className="px-4 py-3 text-left font-medium">Nombre</th>
+                                    <th className="px-4 py-3 text-left font-medium">Teléfono</th>
+                                    <th className="px-4 py-3 text-left font-medium">Estado</th>
+                                    <th className="px-4 py-3 text-left font-medium">Fecha de registro</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -294,7 +294,7 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
                                                     : 'bg-red-100 text-red-700'
                                                     }`}
                                             >
-                                                {client.isActive ? 'Active' : 'Inactive'}
+                                                {client.isActive ? 'Activo' : 'Inactivo'}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-gray-600">
@@ -309,7 +309,7 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
 
                 {filteredClients.length === 0 && (
                     <div className="text-center py-8 text-gray-500">
-                        No clients found matching your filters
+                        No se encontraron clientes que coincidan con tus filtros
                     </div>
                 )}
             </div>
@@ -318,7 +318,7 @@ export default function NewGroupPage({ allClients }: NewGroupPageProps) {
             {selectedClients.length > 0 && (
                 <div className="bg-blue-50 p-4 rounded-lg">
                     <h4 className="font-medium text-blue-900 mb-2">
-                        Selected Clients ({selectedClients.length})
+                        Clientes seleccionados ({selectedClients.length})
                     </h4>
                     <div className="flex flex-wrap gap-2">
                         {selectedClients.map(clientId => {

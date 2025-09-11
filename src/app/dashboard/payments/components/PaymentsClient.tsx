@@ -31,8 +31,8 @@ export default function PaymentsClient({
                 router.refresh();
             });
         } catch (err) {
-            setError('Failed to refresh payments. Please try again.');
-            console.error('Error refreshing payments:', err);
+            setError('No se pudo actualizar la lista de pagos. Intenta de nuevo.');
+            console.error('Error actualizando pagos:', err);
         }
     };
 
@@ -63,7 +63,7 @@ export default function PaymentsClient({
             const result = await response.json();
 
             if (!result.success) {
-                throw new Error(result.error || 'Failed to mark payment as paid');
+                throw new Error(result.error || 'No se pudo marcar el pago como pagado');
             }
 
             // Update local state optimistically
@@ -74,7 +74,7 @@ export default function PaymentsClient({
             ));
 
             // Show success message
-            console.log(`Payment ${paymentId} marked as paid`);
+            console.log(`Pago ${paymentId} marcado como pagado`);
 
             // Refresh data from server
             startTransition(() => {
@@ -82,13 +82,13 @@ export default function PaymentsClient({
             });
 
         } catch (error) {
-            console.error('Error marking payment as paid:', error);
-            setError(error instanceof Error ? error.message : 'Failed to mark payment as paid');
+            console.error('Error al marcar pago como pagado:', error);
+            setError(error instanceof Error ? error.message : 'No se pudo marcar el pago como pagado');
         }
     };
 
     const handleDeletePayment = async (paymentId: string) => {
-        if (!window.confirm('Are you sure you want to delete this payment?')) {
+        if (!window.confirm('¿Seguro que deseas eliminar este pago?')) {
             return;
         }
 
@@ -106,14 +106,14 @@ export default function PaymentsClient({
             const result = await response.json();
 
             if (!result.success) {
-                throw new Error(result.error || 'Failed to delete payment');
+                throw new Error(result.error || 'No se pudo eliminar el pago');
             }
 
             // Update local state optimistically
             setPayments(prev => prev.filter(payment => payment.id !== paymentId));
 
             // Show success message
-            console.log(`Payment ${paymentId} deleted`);
+            console.log(`Pago ${paymentId} eliminado`);
 
             // Refresh data from server
             startTransition(() => {
@@ -121,8 +121,8 @@ export default function PaymentsClient({
             });
 
         } catch (error) {
-            console.error('Error deleting payment:', error);
-            setError(error instanceof Error ? error.message : 'Failed to delete payment');
+            console.error('Error eliminando pago:', error);
+            setError(error instanceof Error ? error.message : 'No se pudo eliminar el pago');
         }
     };
 
@@ -161,7 +161,7 @@ export default function PaymentsClient({
             initialStats={initialStats}
             pageSize={10}
             enableActions={true}
-            title="Client Payments"
+            title="Pagos de clientes"
             showAddButton={true}
         />
     );

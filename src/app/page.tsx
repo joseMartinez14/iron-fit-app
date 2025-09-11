@@ -13,13 +13,13 @@ export default function Home() {
       <section className="container mx-auto max-w-6xl px-6 pt-28 pb-16 sm:pt-36">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 border-gray-200 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur">
-            <span className="text-lg">💪</span> Built for fitness studios
+            <span className="text-lg">💪</span> Hecho para estudios de fitness
           </span>
           <h1 className="mt-6 text-5xl sm:text-6xl font-extrabold tracking-tight">
             Iron Fit
           </h1>
           <p className="mt-4 text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Manage your clients, schedule classes, and track payments — all in one simple, powerful dashboard.
+            Administra tus clientes, programa clases y registra pagos — todo en un panel simple y potente.
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-3">
@@ -27,7 +27,7 @@ export default function Home() {
               href="/dashboard"
               className="inline-flex items-center justify-center rounded-full bg-indigo-600 text-white px-6 py-3 font-semibold shadow hover:bg-indigo-500 transition-colors"
             >
-              Go to Dashboard
+              Ir al panel
             </Link>
           </div>
         </div>
@@ -37,7 +37,7 @@ export default function Home() {
           <div className="aspect-[16/9] w-full rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 grid place-items-center">
             <div className="text-center">
               <div className="text-5xl">📆</div>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Weekly schedule preview</p>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Vista previa del horario semanal</p>
             </div>
           </div>
         </div>
@@ -47,41 +47,41 @@ export default function Home() {
       <section className="container mx-auto max-w-6xl px-6 pb-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
-            title="Client Management"
+            title="Gestión de clientes"
             emoji="🧑‍🤝‍🧑"
-            desc="Create, group, and filter clients with ease. Keep everything in sync."
+            desc="Crea, agrupa y filtra clientes con facilidad. Mantén todo sincronizado."
           />
           <FeatureCard
-            title="Class Scheduling"
+            title="Programación de clases"
             emoji="📅"
-            desc="Plan classes, manage capacity, and track reservations effortlessly."
+            desc="Planifica clases, gestiona la capacidad y controla reservas sin esfuerzo."
           />
           <FeatureCard
-            title="Payments & Reports"
+            title="Pagos y reportes"
             emoji="💳"
-            desc="Record payments and export simple summaries for quick insights."
+            desc="Registra pagos y exporta resúmenes simples para obtener métricas rápidas."
           />
           <FeatureCard
-            title="Access Control"
+            title="Control de acceso"
             emoji="🔐"
-            desc="Admin-protected tools keep sensitive operations safe and secure."
+            desc="Herramientas protegidas para mantener seguras las operaciones sensibles."
           />
           <FeatureCard
-            title="Fast & Modern"
+            title="Rápido y moderno"
             emoji="⚡"
-            desc="Built with Next.js and Tailwind for speed, reliability, and polish."
+            desc="Construido con Next.js y Tailwind para velocidad, confiabilidad y buen acabado."
           />
           <FeatureCard
-            title="Mobile Friendly"
+            title="Adaptado a móvil"
             emoji="📱"
-            desc="Responsive UI works great on phones, tablets, and desktops."
+            desc="Interfaz responsiva que funciona en móviles, tabletas y escritorio."
           />
         </div>
       </section>
 
       {/* Footer */}
       <footer className="border-t border-gray-200 dark:border-white/10 py-8 text-center text-sm text-gray-600 dark:text-gray-400">
-        <p>© {new Date().getFullYear()} Iron Fit. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Iron Fit. Todos los derechos reservados.</p>
       </footer>
     </main>
   );

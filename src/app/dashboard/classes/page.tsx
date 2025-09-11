@@ -32,8 +32,8 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
     return (
         <div className="p-6 space-y-6">
             <header>
-                <h1 className="text-2xl font-semibold">Classes</h1>
-                <p className="text-gray-500">Manage all fitness classes and schedules</p>
+                <h1 className="text-2xl font-semibold">Clases</h1>
+                <p className="text-gray-500">Gestiona todas las clases y horarios</p>
             </header>
 
             <Filters />

@@ -30,33 +30,33 @@ export default function DashboardClient({
     <div className="flex h-screen overflow-hidden">
       {/* Main Content */}
       <main className="flex-1 bg-app-bg p-6 overflow-y-auto w-full">
-        <h1 className="text-2xl font-semibold mb-4">Dashboard</h1>
-        <p className="text-gray-600 mb-6">{`Welcome back! Here's what's happening today.`}</p>
+        <h1 className="text-2xl font-semibold mb-4">Panel</h1>
+        <p className="text-gray-600 mb-6">{`¡Bienvenido de nuevo! Esto es lo que sucede hoy.`}</p>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatCard title="Total Clients" value={String(stats.totalClients)} sub="" />
-          <StatCard title="Active Clients" value={String(stats.activeClients)} sub="" />
-          <StatCard title="Classes Today" value={String(stats.classesToday)} sub="" />
-          <StatCard title="Reserved Spots" value={String(stats.reservedSpots)} sub="" />
+          <StatCard title="Clientes totales" value={String(stats.totalClients)} sub="" />
+          <StatCard title="Clientes activos" value={String(stats.activeClients)} sub="" />
+          <StatCard title="Clases de hoy" value={String(stats.classesToday)} sub="" />
+          <StatCard title="Cupos reservados" value={String(stats.reservedSpots)} sub="" />
         </div>
 
         {/* Today's Classes */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">{`Today's Classes`}</h2>
-            <Button variant="link">View All</Button>
+            <h2 className="text-lg font-semibold">{`Clases de hoy`}</h2>
+            <Button variant="link">Ver todo</Button>
           </div>
           <div className="bg-white shadow rounded-lg overflow-hidden">
             <table className="min-w-full text-sm">
               <thead className="bg-gray-50">
                 <tr>
-                  <Th>Time</Th>
-                  <Th>Class Name</Th>
+                  <Th>Hora</Th>
+                  <Th>Nombre de la clase</Th>
                   <Th>Instructor</Th>
-                  <Th>Capacity</Th>
-                  <Th>Reserved</Th>
-                  <Th>Actions</Th>
+                  <Th>Capacidad</Th>
+                  <Th>Reservados</Th>
+                  <Th>Acciones</Th>
                 </tr>
               </thead>
               <tbody>
@@ -68,7 +68,7 @@ export default function DashboardClient({
                     <Td>{c.capacity}</Td>
                     <Td>{c.reserved}</Td>
                     <Td>
-                      <Button size="icon" variant="ghost" aria-label="View class">
+                      <Button size="icon" variant="ghost" aria-label="Ver clase">
                         <EyeIcon className="w-4 h-4" />
                       </Button>
                     </Td>
@@ -77,7 +77,7 @@ export default function DashboardClient({
                 {classes.length === 0 && (
                   <tr>
                     <Td colSpan={6}>
-                      <span className="text-gray-500">No classes scheduled today.</span>
+                      <span className="text-gray-500">No hay clases programadas para hoy.</span>
                     </Td>
                   </tr>
                 )}
@@ -131,4 +131,3 @@ function formatTime(iso: string) {
     return iso;
   }
 }
-

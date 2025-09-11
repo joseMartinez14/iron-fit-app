@@ -10,13 +10,13 @@ import AttendeeManagement from './components/AttendeeManagement';
 
 // Schema for class form validation
 const editClassSchema = z.object({
-    title: z.string().min(1, 'Class title is required'),
+    title: z.string().min(1, 'El título de la clase es obligatorio'),
     description: z.string().optional(),
     location: z.string().optional(),
-    date: z.string().min(1, 'Date is required'),
-    startTime: z.string().min(1, 'Start time is required'),
-    endTime: z.string().min(1, 'End time is required'),
-    capacity: z.string().min(1, 'Capacity is required'),
+    date: z.string().min(1, 'La fecha es obligatoria'),
+    startTime: z.string().min(1, 'La hora de inicio es obligatoria'),
+    endTime: z.string().min(1, 'La hora de fin es obligatoria'),
+    capacity: z.string().min(1, 'La capacidad es obligatoria'),
     isCancelled: z.boolean(),
 });
 
@@ -121,7 +121,7 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
             if (response.data.success) {
                 setSubmitMessage({
                     type: 'success',
-                    text: response.data.message || 'Class updated successfully!'
+                    text: response.data.message || '¡Clase actualizada con éxito!'
                 });
 
                 // Redirect after success
@@ -266,7 +266,7 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Start Time
+                                    Hora de inicio
                                 </label>
                                 <Controller
                                     name="startTime"
@@ -286,7 +286,7 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    End Time
+                                    Hora de fin
                                 </label>
                                 <Controller
                                     name="endTime"
@@ -309,7 +309,7 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
                         {/* Capacity */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Capacity
+                                Capacidad
                             </label>
                             <Controller
                                 name="capacity"
@@ -332,7 +332,7 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
                         {/* Status */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Status
+                                Estado
                             </label>
                             <Controller
                                 name="isCancelled"
@@ -344,8 +344,8 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
                                         onChange={(e) => field.onChange(e.target.value === "true")}
                                         className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
-                                        <option value="false">Active</option>
-                                        <option value="true">Cancelled</option>
+                                        <option value="false">Activa</option>
+                                        <option value="true">Cancelada</option>
                                     </select>
                                 )}
                             />
@@ -371,7 +371,7 @@ export default function EditClassPage({ classData, allClients, allGroups }: Edit
                                 : 'bg-blue-500 hover:bg-blue-600'
                                 }`}
                         >
-                            {isSubmitting ? 'Updating Class...' : 'Update Class'}
+                            {isSubmitting ? 'Actualizando clase...' : 'Actualizar clase'}
                         </button>
                     </form>
                 </div>

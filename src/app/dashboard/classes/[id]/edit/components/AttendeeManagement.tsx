@@ -116,16 +116,16 @@ export default function AttendeeManagement({
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-lg font-medium">Manage Attendees</h2>
+                <h2 className="text-lg font-medium">Gestionar asistentes</h2>
                 <div className="text-sm text-gray-600">
-                    {selectedAttendees.length} / {classCapacity} selected
+                    {selectedAttendees.length} / {classCapacity} seleccionados
                 </div>
             </div>
 
             {/* Capacity Warning */}
             {isAtCapacity && (
                 <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 rounded text-sm">
-                    Class is at capacity ({classCapacity} attendees)
+                    La clase está al máximo de capacidad ({classCapacity} asistentes)
                 </div>
             )}
 
@@ -133,7 +133,7 @@ export default function AttendeeManagement({
             {selectedAttendees.length > 0 && (
                 <div className="bg-blue-50 border border-blue-200 rounded p-3">
                     <h3 className="font-medium text-blue-900 text-sm mb-2">
-                        Selected Attendees ({selectedAttendees.length})
+                        Asistentes seleccionados ({selectedAttendees.length})
                     </h3>
                     <div className="flex flex-wrap gap-1">
                         {allClients
@@ -149,7 +149,7 @@ export default function AttendeeManagement({
                             ))}
                         {selectedAttendees.length > 5 && (
                             <span className="text-blue-600 text-xs">
-                                +{selectedAttendees.length - 5} more
+                                +{selectedAttendees.length - 5} más
                             </span>
                         )}
                     </div>
@@ -160,7 +160,7 @@ export default function AttendeeManagement({
             <div>
                 <input
                     type="text"
-                    placeholder="Search clients or groups..."
+                    placeholder="Buscar clientes o grupos..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -176,7 +176,7 @@ export default function AttendeeManagement({
                         : 'border-transparent text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    Individual Clients ({filteredClients.length})
+                    Clientes individuales ({filteredClients.length})
                 </button>
                 <button
                     onClick={() => setSelectedTab('groups')}
@@ -185,7 +185,7 @@ export default function AttendeeManagement({
                         : 'border-transparent text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    Client Groups ({filteredGroups.length})
+                    Grupos de clientes ({filteredGroups.length})
                 </button>
             </div>
 
@@ -199,7 +199,7 @@ export default function AttendeeManagement({
                         : 'bg-green-100 text-green-700 hover:bg-green-200'
                         }`}
                 >
-                    {areAllFilteredItemsSelected() ? 'All Selected' : 'Select All'}
+                    {areAllFilteredItemsSelected() ? 'Todos seleccionados' : 'Seleccionar todo'}
                 </button>
                 <button
                     onClick={handleClearAll}
@@ -209,7 +209,7 @@ export default function AttendeeManagement({
                         : 'bg-red-100 text-red-700 hover:bg-red-200'
                         }`}
                 >
-                    Clear All
+                    Limpiar todo
                 </button>
             </div>
 
@@ -250,7 +250,7 @@ export default function AttendeeManagement({
                                                     : 'bg-red-100 text-red-700'
                                                     }`}
                                             >
-                                                {client.isActive ? 'Active' : 'Inactive'}
+                                                {client.isActive ? 'Activo' : 'Inactivo'}
                                             </span>
                                         </div>
                                     </div>
@@ -295,7 +295,7 @@ export default function AttendeeManagement({
                                                 </div>
                                             </div>
                                             <div className="text-xs text-gray-500">
-                                                {group.memberCount} members
+                                                {group.memberCount} miembros
                                             </div>
                                         </div>
 
@@ -324,7 +324,7 @@ export default function AttendeeManagement({
                                                             : 'bg-red-100 text-red-700'
                                                             }`}
                                                     >
-                                                        {member.isActive ? 'Active' : 'Inactive'}
+                                                        {member.isActive ? 'Activo' : 'Inactivo'}
                                                     </span>
                                                 </div>
                                             ))}
@@ -334,7 +334,7 @@ export default function AttendeeManagement({
                             })
                         ) : (
                             <div className="p-4 text-center text-gray-500 text-sm">
-                                No client groups found matching your search.
+                                No se encontraron grupos de clientes que coincidan con tu búsqueda.
                             </div>
                         )}
                     </div>

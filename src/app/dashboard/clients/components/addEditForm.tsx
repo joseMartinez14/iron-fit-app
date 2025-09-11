@@ -12,34 +12,34 @@ import axios from 'axios'
 const baseSchema = z.object({
     name: z
         .string()
-        .min(2, 'Name must be at least 2 characters')
-        .max(80, 'Name is too long'),
+        .min(2, 'El nombre debe tener al menos 2 caracteres')
+        .max(80, 'El nombre es demasiado largo'),
     phone: z
         .string()
-        .max(30, 'Phone is too long')
-        .regex(/^[0-9+()\-\s]*$/, 'Only digits, spaces, +, -, () allowed')
+        .max(30, 'El teléfono es demasiado largo')
+        .regex(/^[0-9+()\-\s]*$/, 'Solo se permiten dígitos, espacios y + - ()')
         .optional()
         .or(z.literal('')),
     userName: z
         .string()
         .trim()
-        .min(4, 'Username must be at least 4 characters')
-        .max(30, 'Username too long')
-        .regex(/^[a-z0-9_.-]+$/, 'Use lowercase letters, numbers, dot, dash or underscore'),
+        .min(4, 'El usuario debe tener al menos 4 caracteres')
+        .max(30, 'El usuario es demasiado largo')
+        .regex(/^[a-z0-9_.-]+$/, 'Usa minúsculas, números, punto, guion o guion bajo'),
     isActive: z.boolean().optional().default(false),
 })
 
 const createSchema = baseSchema.extend({
     password: z
         .string()
-        .min(8, 'Password must be at least 8 characters')
-        .max(128, 'Password too long'),
+        .min(8, 'La contraseña debe tener al menos 8 caracteres')
+        .max(128, 'La contraseña es demasiado larga'),
 })
 
 const editSchema = baseSchema.extend({
     password: z
         .union([
-            z.string().min(8, 'Password must be at least 8 characters').max(128, 'Password too long'),
+            z.string().min(8, 'La contraseña debe tener al menos 8 caracteres').max(128, 'La contraseña es demasiado larga'),
             z.string().length(0), // Allow empty string
             z.undefined(), // Allow undefined
         ])
@@ -79,7 +79,7 @@ function getPasswordStrength(pw: string) {
     if (/[0-9]/.test(pw)) score++
     if (/[^A-Za-z0-9]/.test(pw)) score++
     if (pw.length >= 12) score++
-    const labels = ['Very weak', 'Weak', 'Okay', 'Good', 'Strong', 'Very strong']
+    const labels = ['Muy débil', 'Débil', 'Regular', 'Buena', 'Fuerte', 'Muy fuerte']
     return { score, label: labels[Math.min(score, labels.length - 1)] }
 }
 
@@ -149,15 +149,15 @@ export default function ClientForm({
 
                 const response = await axios.post('/api/protected/client', payload)
                 if (response.data?.success) {
-                    alert('✅ Client created successfully!')
+                    alert('✅ ¡Cliente creado con éxito!')
                     reset({ name: '', phone: '', userName: '', password: '', isActive: false })
                 } else {
-                    alert('❌ Failed to create client: ' + (response.data?.error || 'Unknown error'))
+                    alert('❌ No se pudo crear el cliente: ' + (response.data?.error || 'Error desconocido'))
                 }
             } else {
                 // EDIT MODE
                 if (!id) {
-                    alert('❌ Missing client id for edit action.')
+                    alert('❌ Falta el ID del cliente para editar.')
                     return
                 }
                 // include password if provided
@@ -169,9 +169,9 @@ export default function ClientForm({
 
                 const response = await axios.put(`/api/protected/client/${id}`, payload)
                 if (response.data?.success) {
-                    alert('✅ Client updated successfully!')
+                    alert('✅ ¡Cliente actualizado con éxito!')
                 } else {
-                    alert('❌ Failed to update client: ' + (response.data?.error || 'Unknown error'))
+                    alert('❌ No se pudo actualizar el cliente: ' + (response.data?.error || 'Error desconocido'))
                 }
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -184,7 +184,7 @@ export default function ClientForm({
             } else if (error?.message) {
                 alert('❌ Error: ' + error.message)
             } else {
-                alert('❌ Failed to submit. Please try again.')
+                alert('❌ No se pudo enviar. Inténtalo de nuevo.')
             }
         }
     }
@@ -194,14 +194,14 @@ export default function ClientForm({
     return (
         <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
             <div className="border-b border-gray-200 p-5">
-                <h2 className="text-lg font-medium">Client Details</h2>
+                <h2 className="text-lg font-medium">Detalles del cliente</h2>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="p-5 space-y-6">
                 {/* Name */}
                 <div className="grid gap-2">
                     <label htmlFor="name" className="text-sm font-medium">
-                        Full name <span className="text-red-500">*</span>
+                        Nombre completo <span className="text-red-500">*</span>
                     </label>
                     <input
                         id="name"
@@ -209,7 +209,7 @@ export default function ClientForm({
                         autoComplete="name"
                         {...register('name')}
                         className="h-11 rounded-xl border border-gray-300 bg-white px-3 outline-none ring-0 focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
-                        placeholder="e.g., Ana Morales"
+                        placeholder="Ej.: Ana Morales"
                     />
                     {errors.name?.message && (
                         // @ts-expect-error errors.name is a ZodError
@@ -220,7 +220,7 @@ export default function ClientForm({
                 {/* Phone (optional) */}
                 <div className="grid gap-2">
                     <label htmlFor="phone" className="text-sm font-medium">
-                        Phone (optional)
+                        Teléfono (opcional)
                     </label>
                     <input
                         id="phone"
@@ -229,7 +229,7 @@ export default function ClientForm({
                         autoComplete="tel"
                         {...register('phone')}
                         className="h-11 rounded-xl border border-gray-300 bg-white px-3 outline-none ring-0 focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
-                        placeholder="e.g., +57 300 123 4567"
+                        placeholder="Ej.: +57 300 123 4567"
                     />
                     {errors.phone?.message && (
                         // @ts-expect-error errors.name is a ZodError
@@ -241,7 +241,7 @@ export default function ClientForm({
                 <div className="grid gap-2">
                     <div className="flex items-center justify-between">
                         <label htmlFor="userName" className="text-sm font-medium">
-                            Username <span className="text-red-500">*</span>
+                            Usuario <span className="text-red-500">*</span>
                         </label>
                         <button
                             type="button"
@@ -249,7 +249,7 @@ export default function ClientForm({
                             className="text-xs font-medium text-gray-700 underline-offset-2 hover:underline"
                             aria-label="Suggest username from name"
                         >
-                            Suggest from name
+                            Sugerir desde el nombre
                         </button>
                     </div>
                     <input
@@ -258,9 +258,9 @@ export default function ClientForm({
                         autoComplete="username"
                         {...register('userName')}
                         className="h-11 rounded-xl border border-gray-300 bg-white px-3 outline-none ring-0 focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
-                        placeholder="e.g., ana.morales"
+                        placeholder="Ej.: ana.morales"
                     />
-                    <p className="text-xs text-gray-500">Use lowercase letters, numbers, dot, dash or underscore.</p>
+                    <p className="text-xs text-gray-500">Usa minúsculas, números, punto, guion o guion bajo.</p>
                     {errors.userName && (
                         // @ts-expect-error errors.name is a ZodError
                         <p className="text-sm text-red-600">{errors.userName.message}</p>
@@ -272,9 +272,9 @@ export default function ClientForm({
                     <div className="flex items-center justify-between">
                         <label htmlFor="password" className="text-sm font-medium">
                             {mode === 'create' ? (
-                                <>Password <span className="text-red-500">*</span></>
+                                <>Contraseña <span className="text-red-500">*</span></>
                             ) : (
-                                <>New password (optional)</>
+                                <>Nueva contraseña (opcional)</>
                             )}
                         </label>
                         <div className="flex items-center gap-3">
@@ -284,7 +284,7 @@ export default function ClientForm({
                                 className="text-xs font-medium text-gray-700 underline-offset-2 hover:underline"
                                 aria-label="Toggle password visibility"
                             >
-                                {showPassword ? 'Hide' : 'Show'}
+                                {showPassword ? 'Ocultar' : 'Mostrar'}
                             </button>
                             <button
                                 type="button"
@@ -292,7 +292,7 @@ export default function ClientForm({
                                 className="rounded-full border border-gray-300 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50"
                                 aria-label="Generate strong password"
                             >
-                                Generate
+                                Generar
                             </button>
                         </div>
                     </div>
@@ -302,10 +302,10 @@ export default function ClientForm({
                         autoComplete={mode === 'create' ? 'new-password' : 'off'}
                         {...register('password')}
                         className="h-11 rounded-xl border border-gray-300 bg-white px-3 outline-none ring-0 focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
-                        placeholder="At least 8 characters"
+                        placeholder="Al menos 8 caracteres"
                     />
                     <div className="flex items-center justify-between text-xs">
-                        <p className="text-gray-500">Strength: <span className="font-medium text-gray-700">{strength.label}</span></p>
+                        <p className="text-gray-500">Fuerza: <span className="font-medium text-gray-700">{strength.label}</span></p>
                         <div className="flex gap-1" aria-hidden>
                             {Array.from({ length: 6 }).map((_, i) => (
                                 <span
@@ -325,8 +325,8 @@ export default function ClientForm({
                 {mode === 'edit' && (
                     <div className="flex items-center justify-between rounded-xl border border-gray-200 p-4">
                         <div>
-                            <p className="text-sm font-medium">Active status</p>
-                            <p className="text-xs text-gray-500">Active clients can book classes and appear in attendance lists.</p>
+                            <p className="text-sm font-medium">Estado activo</p>
+                            <p className="text-xs text-gray-500">Los clientes activos pueden reservar clases y aparecer en listas de asistencia.</p>
                         </div>
                         <label className="relative inline-flex cursor-pointer items-center">
                             <input
@@ -352,21 +352,21 @@ export default function ClientForm({
                         href="/admin/clients"
                         className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
-                        Cancel
+                        Cancelar
                     </a>
                     <button
                         type="submit"
                         disabled={isSubmitting}
                         className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {isSubmitting ? (mode === 'create' ? 'Saving…' : 'Updating…') : (mode === 'create' ? 'Save Client' : 'Update Client')}
+                        {isSubmitting ? (mode === 'create' ? 'Guardando…' : 'Actualizando…') : (mode === 'create' ? 'Guardar cliente' : 'Actualizar cliente')}
                     </button>
                 </div>
             </form>
 
             {/* Developer helper: live JSON */}
             <details className="mt-2 cursor-pointer select-none text-sm text-gray-600 px-5 pb-5">
-                <summary className="mb-2 font-medium">Developer Preview</summary>
+                <summary className="mb-2 font-medium">Vista previa para desarrollador</summary>
                 <pre className="overflow-x-auto rounded-xl border border-gray-200 bg-white p-4 text-xs">
                     {JSON.stringify(
                         {

@@ -13,13 +13,13 @@ const getTodayDate = () => {
 };
 
 const singleClassSchema = z.object({
-    name: z.string().min(1, 'Class name is required'),
+    name: z.string().min(1, 'El nombre de la clase es obligatorio'),
     description: z.string().optional(),
-    date: z.string().min(1, 'Date is required'),
-    startTime: z.string().min(1, 'Start time is required'),
-    endTime: z.string().min(1, 'End time is required'),
-    instructor: z.string().min(1, 'Instructor is required'),
-    capacity: z.string().min(1, 'Capacity is required'),
+    date: z.string().min(1, 'La fecha es obligatoria'),
+    startTime: z.string().min(1, 'La hora de inicio es obligatoria'),
+    endTime: z.string().min(1, 'La hora de fin es obligatoria'),
+    instructor: z.string().min(1, 'El instructor es obligatorio'),
+    capacity: z.string().min(1, 'La capacidad es obligatoria'),
     isCancelled: z.boolean(),
 });
 
@@ -54,7 +54,7 @@ export default function SingleClassForm() {
             if (response.data.success) {
                 setSubmitMessage({
                     type: 'success',
-                    text: response.data.message || 'Class created successfully!'
+                    text: response.data.message || '¡Clase creada con éxito!'
                 });
                 // Reset form
                 form.reset({
@@ -70,10 +70,10 @@ export default function SingleClassForm() {
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.error('Error creating class:', error);
+            console.error('Error al crear la clase:', error);
             setSubmitMessage({
                 type: 'error',
-                text: error.response?.data?.error || 'Failed to create class. Please try again.'
+                text: error.response?.data?.error || 'No se pudo crear la clase. Intenta nuevamente.'
             });
         } finally {
             setIsSubmitting(false);
@@ -93,9 +93,9 @@ export default function SingleClassForm() {
             )}
 
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
-                {/* Class Name */}
+                {/* Nombre de la clase */}
                 <div>
-                    <label className="block font-medium">Class Name</label>
+                    <label className="block font-medium">Nombre de la clase</label>
                     <Controller
                         name="name"
                         control={form.control}
@@ -103,7 +103,7 @@ export default function SingleClassForm() {
                             <input
                                 {...field}
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter class name"
+                                placeholder="Ingresa el nombre de la clase"
                             />
                         )}
                     />
@@ -112,9 +112,9 @@ export default function SingleClassForm() {
                     )}
                 </div>
 
-                {/* Description */}
+                {/* Descripción */}
                 <div>
-                    <label className="block font-medium">Description</label>
+                    <label className="block font-medium">Descripción</label>
                     <Controller
                         name="description"
                         control={form.control}
@@ -122,15 +122,15 @@ export default function SingleClassForm() {
                             <textarea
                                 {...field}
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter class description"
+                                placeholder="Ingresa la descripción de la clase"
                             />
                         )}
                     />
                 </div>
 
-                {/* Date */}
+                {/* Fecha */}
                 <div>
-                    <label className="block font-medium">Date</label>
+                    <label className="block font-medium">Fecha</label>
                     <Controller
                         name="date"
                         control={form.control}
@@ -147,10 +147,10 @@ export default function SingleClassForm() {
                     )}
                 </div>
 
-                {/* Time fields */}
+                {/* Horarios */}
                 <div className="flex gap-4">
                     <div className="flex-1">
-                        <label className="block font-medium">Start Time</label>
+                        <label className="block font-medium">Hora de inicio</label>
                         <Controller
                             name="startTime"
                             control={form.control}
@@ -168,7 +168,7 @@ export default function SingleClassForm() {
                     </div>
 
                     <div className="flex-1">
-                        <label className="block font-medium">End Time</label>
+                        <label className="block font-medium">Hora de fin</label>
                         <Controller
                             name="endTime"
                             control={form.control}
@@ -197,7 +197,7 @@ export default function SingleClassForm() {
                             <input
                                 {...field}
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter instructor name"
+                                placeholder="Ingresa el nombre del instructor"
                             />
                         )}
                     />
@@ -206,9 +206,9 @@ export default function SingleClassForm() {
                     )}
                 </div>
 
-                {/* Capacity */}
+                {/* Capacidad */}
                 <div>
-                    <label className="block font-medium">Capacity</label>
+                    <label className="block font-medium">Capacidad</label>
                     <Controller
                         name="capacity"
                         control={form.control}
@@ -218,7 +218,7 @@ export default function SingleClassForm() {
                                 type="number"
                                 min="1"
                                 className="mt-1 w-full border px-3 py-2 rounded"
-                                placeholder="Enter capacity"
+                                placeholder="Ingresa la capacidad"
                             />
                         )}
                     />
@@ -227,9 +227,9 @@ export default function SingleClassForm() {
                     )}
                 </div>
 
-                {/* Status */}
+                {/* Estado */}
                 <div>
-                    <label className="block font-medium">Status</label>
+                    <label className="block font-medium">Estado</label>
                     <Controller
                         name="isCancelled"
                         control={form.control}
@@ -240,8 +240,8 @@ export default function SingleClassForm() {
                                 onChange={(e) => field.onChange(e.target.value === "true")}
                                 className="mt-1 w-full border px-3 py-2 rounded"
                             >
-                                <option value="false">Active</option>
-                                <option value="true">Cancelled</option>
+                                <option value="false">Activa</option>
+                                <option value="true">Cancelada</option>
                             </select>
                         )}
                     />
@@ -255,7 +255,7 @@ export default function SingleClassForm() {
                         : 'bg-black hover:bg-gray-800'
                         }`}
                 >
-                    {isSubmitting ? 'Creating Class...' : 'Save Class'}
+                    {isSubmitting ? 'Creando clase...' : 'Guardar clase'}
                 </button>
             </form>
         </div>

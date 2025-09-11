@@ -9,7 +9,7 @@ async function queryAllAdmins() {
     const verified = await isAuthenticated();
 
     if (!verified.status) {
-        throw new Error('Authentication failed');
+        throw new Error('Autenticación fallida');
     }
 
     return await getAllAdmins();

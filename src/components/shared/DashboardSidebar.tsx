@@ -20,14 +20,14 @@ const DashboardSidebar = () => {
     const router = useRouter();
     const pathname = usePathname();
 
-    // Navigation items with their routes
+    // Navigation items with their routes (labels in Spanish)
     const mainNavItems = [
-        { icon: <LayoutDashboard />, label: "Dashboard", href: "/dashboard" },
-        { icon: <Dumbbell />, label: "Classes", href: "/dashboard/classes" },
-        { icon: <Users />, label: "Clients", href: "/dashboard/clients" },
-        { icon: <CreditCard />, label: "Payments", href: "/dashboard/payments" },
-        // { icon: <Calendar />, label: "Schedule", href: "/dashboard/schedule" },
-        // { icon: <BarChart2 />, label: "Reports", href: "/dashboard/reports" },
+        { icon: <LayoutDashboard />, label: "Inicio", href: "/dashboard" },
+        { icon: <Dumbbell />, label: "Clases", href: "/dashboard/classes" },
+        { icon: <Users />, label: "Clientes", href: "/dashboard/clients" },
+        { icon: <CreditCard />, label: "Pagos", href: "/dashboard/payments" },
+        // { icon: <Calendar />, label: "Horario", href: "/dashboard/schedule" },
+        // { icon: <BarChart2 />, label: "Reportes", href: "/dashboard/reports" },
     ];
 
     const bottomNavItems = [
